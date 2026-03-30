@@ -35,7 +35,7 @@ function updateMainListFromArray() {
 
         } else {
             li1InnerText = `<li id="${"l" + i}">${keyName} <button id="${"l" + i + "_btn"}" data-id="${i + ""}"> - </button> 
-             <button id="${"+" + "," + i}" data-id="${"+" + "," + i}"> + </button>  </li> `
+             <button id="${"+" + "," + i + "," + 0}" data-id="${"+" + "," + i + "," + 0}"> + </button>  </li> `
 
         }
 
@@ -58,12 +58,15 @@ document.addEventListener("click", (e) => {
         if (indexStr.length > 1) {
             if (indexStr[0] != "+") {
 
-                Object.values(mainListArray[indexStr[0]])[0].splice(indexStr[1], 1)
+                if (mainListArray.length > 1) {
+                    Object.values(mainListArray[indexStr[0]])[0].splice(indexStr[1], 1)
+                }
+
             } else {
                 //+ case:
                 if (indexStr.length > 2) {
                     let str = prompt("הכנס משימה");
-                    console.log(Object.values(mainListArray[indexStr[1]])[2])
+                    console.log(Object.values(mainListArray[indexStr[1]])[0])
                     Object.values(mainListArray[indexStr[1]])[0].push(str)
                 } else {
                     let str = prompt("הכנס משימה");
@@ -74,7 +77,9 @@ document.addEventListener("click", (e) => {
 
             }
         } else {
-            mainListArray.splice(indexStr, 1)
+            if (mainListArray.length > 1) {
+                mainListArray.splice(indexStr, 1)
+            }
         }
 
         updateMainListFromArray();
