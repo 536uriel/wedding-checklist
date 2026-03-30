@@ -1,0 +1,86 @@
+var mainListArray = [{ "לתאם עם מעצבת אולם": [] },
+{ "לפתוח תיק ברבנות": ["לתאם רב", "להכין עדים"] }];
+
+var mainList = document.getElementById("mainList");
+
+function updateMainListFromArray() {
+
+    mainList.innerHTML = "";
+    let li1InnerText = "";
+
+    mainListArray.forEach((val, i) => {
+
+        let keyName = Object.keys(val)[0];
+
+        let valsArr = val[keyName];
+
+
+        if (valsArr.length > 1) {
+
+            let li2InnerText = ""
+
+            valsArr.forEach((val2, i2) => {
+
+                li2InnerText += `<li id="${"l" + i + "_ul_l" + i2}"> ${val2} <button id="${"l" + i + "_ul_l" + i2 + "_btn"}" data-id="${i + "," + i2}"> - </button>
+                <button id="${"+" + "," + i + "," + i2}" data-id="${"+" + "," + i + "," + i2}"> + </button> </li>`
+
+            })
+
+            let ul2InnerText = `<ul id="${"l" + i + "_ul_l"}">${li2InnerText}</ul>`;
+
+            li1InnerText = `<li id="${"l" + i}"> ${keyName} <button id="${"l" + i + "_btn"}" data-id="${i + ""}"> - </button> ${ul2InnerText} 
+            <button id="${"+" + "," + i}" data-id="${"+" + "," + i}"> + </button> </li>`
+
+
+
+        } else {
+            li1InnerText = `<li id="${"l" + i}">${keyName} <button id="${"l" + i + "_btn"}" data-id="${i + ""}"> - </button> 
+             <button id="${"+" + "," + i}" data-id="${"+" + "," + i}"> + </button>  </li> `
+
+        }
+
+        mainList.innerHTML += li1InnerText;
+
+    })
+}
+
+updateMainListFromArray();
+
+
+document.addEventListener("click", (e) => {
+    let elem = document.getElementById(e.target.id) || { tagName: "" };
+
+    if (elem.tagName == "BUTTON") {
+        let indexStr = elem.dataset.id;
+        indexStr = indexStr.split(",");
+        console.log(indexStr)
+
+        if (indexStr.length > 1) {
+            if (indexStr[0] != "+") {
+
+                Object.values(mainListArray[indexStr[0]])[0].splice(indexStr[1], 1)
+            } else {
+                //+ case:
+                if (indexStr.length > 2) {
+                    let str = prompt("הכנס משימה");
+                    console.log(Object.values(mainListArray[indexStr[1]])[2])
+                    Object.values(mainListArray[indexStr[1]])[0].push(str)
+                } else {
+                    let str = prompt("הכנס משימה");
+                    let ob = {}
+                    ob[str] = [];
+                    mainListArray.push(ob);
+                }
+
+            }
+        } else {
+            mainListArray.splice(indexStr, 1)
+        }
+
+        updateMainListFromArray();
+
+    }
+})
+
+
+
