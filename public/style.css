@@ -1,6 +1,16 @@
+h1{
+  text-align: center;
+  color: rgb(127, 129, 255);
+  
+}
+
+ul{
+  list-style-type: none;
+}
+
 body>ul:first-of-type>li {
     padding: 0.5rem;
-    background: rgb(135, 158, 222);
+    background: rgb(135, 173, 222);
     border: 1px solid rgba(205, 231, 255, 0.624);
 }
 
@@ -24,4 +34,10 @@ ul li ul li {
   -moz-user-select: none;    /* Firefox */
   -ms-user-select: none;     /* IE10+/Edge */
   user-select: none;         /* Standard */
+}
+
+button{
+  padding: 0.2rem 0.5rem;
+  background-color: rgb(0, 255, 238);
+  border: 0.1rem solid black;
 }
