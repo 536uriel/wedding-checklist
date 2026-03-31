@@ -71,21 +71,21 @@ function updateMainListFromArray() {
 
             valsArr.forEach((val2, i2) => {
 
-                li2InnerText += `<li id="${"l" + i + "_ul_l" + i2}"> ${val2} <button id="${"l" + i + "_ul_l" + i2 + "_btn"}" data-id="${i + "," + i2}"> - </button>
-                <button id="${"+" + "," + i + "," + i2}" data-id="${"+" + "," + i + "," + i2}"> + </button> </li>`
+                li2InnerText += `<li contenteditable="true" id="${"l" + i + "_ul_l" + i2}"> ${val2} <button contenteditable="false" id="${"l" + i + "_ul_l" + i2 + "_btn"}" data-id="${i + "," + i2}"> - </button>
+                <button contenteditable="false" id="${"+" + "," + i + "," + i2}" data-id="${"+" + "," + i + "," + i2}"> + </button> </li>`
 
             })
 
             let ul2InnerText = `<ul id="${"l" + i + "_ul_l"}">${li2InnerText}</ul>`;
 
-            li1InnerText = `<li id="${"l" + i}"> ${keyName} <button id="${"l" + i + "_btn"}" data-id="${i + ""}"> - </button> ${ul2InnerText} 
-            <button id="${"+" + "," + i}" data-id="${"+" + "," + i}"> + </button> </li>`
+            li1InnerText = `<li contenteditable="true" id="${"l" + i}"> ${keyName} <button contenteditable="false" id="${"l" + i + "_btn"}" data-id="${i + ""}"> - </button> ${ul2InnerText} 
+            <button contenteditable="false" id="${"+" + "," + i}" data-id="${"+" + "," + i}"> + </button> </li>`
 
 
 
         } else {
-            li1InnerText = `<li id="${"l" + i}">${keyName} <button id="${"l" + i + "_btn"}" data-id="${i + ""}"> - </button> 
-             <button id="${"+" + "," + i + "," + 0}" data-id="${"+" + "," + i + "," + 0}"> + </button>  </li> `
+            li1InnerText = `<li contenteditable="true" id="${"l" + i}">${keyName} <button contenteditable="false" id="${"l" + i + "_btn"}" data-id="${i + ""}"> - </button> 
+             <button contenteditable="false" id="${"+" + "," + i + "," + 0}" data-id="${"+" + "," + i + "," + 0}"> + </button>  </li> `
 
         }
 
