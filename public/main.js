@@ -95,15 +95,15 @@ function updateMainListFromArray() {
 }
 
 function getOwnText(element) {
-  let text = '';
-  // Iterate over all direct children of the element
-  for (const node of element.childNodes) {
-    // Check if the node is a text node (nodeType 3)
-    if (node.nodeType === Node.TEXT_NODE) {
-      text += node.textContent;
+    let text = '';
+    // Iterate over all direct children of the element
+    for (const node of element.childNodes) {
+        // Check if the node is a text node (nodeType 3)
+        if (node.nodeType === Node.TEXT_NODE) {
+            text += node.textContent;
+        }
     }
-  }
-  return text.trim(); // Use .trim() to remove excess whitespace/newlines
+    return text.trim(); // Use .trim() to remove excess whitespace/newlines
 }
 
 function updateArrayFromLists() {
@@ -116,18 +116,53 @@ function updateArrayFromLists() {
             if (childLi.parentElement.parentElement === parentLi) {
 
                 let childLiStr = getOwnText(childLi);
-                
+
                 mainListArray[i][keyName].push(childLiStr);
 
             }
 
         });
-       
+
 
     });
 }
 
+var mainLiDraggedItem = null;
+var parentLiOrChildLi = ""
+
 function resetDragableClasses() {
+
+    document.querySelectorAll("body>ul:first-of-type>li").forEach(mainLi => {
+        mainLi.classList.add("draggable")
+        mainLi.classList.add("unselectable")
+        mainLi.setAttribute("draggable", "true");
+
+
+        mainLi.addEventListener("dragstart", (e) => {
+            mainLiDraggedItem = mainLi;
+            parentLiOrChildLi = "parent"
+            e.stopPropagation();
+        });
+
+        mainLi.addEventListener("dragover", e => {
+            e.preventDefault();
+        });
+
+        mainLi.addEventListener("drop", e => {
+            e.preventDefault();
+
+            //IMPORTANT: prevent moving into itself or its descendants
+            if (parentLiOrChildLi == "child") return;
+
+            
+            mainLi.parentNode.insertBefore(mainLiDraggedItem, mainLi);
+
+            updateArrayFromLists();
+            console.log(mainListArray)
+
+        });
+    });
+
 
     document.querySelectorAll("ul li ul li").forEach(li => {
         li.classList.add("draggable")
@@ -135,8 +170,10 @@ function resetDragableClasses() {
         li.setAttribute("draggable", "true");
 
 
-        li.addEventListener("dragstart", () => {
+        li.addEventListener("dragstart", (e) => {
             draggedItem = li;
+            parentLiOrChildLi = "child"
+            e.stopPropagation();
         });
 
         li.addEventListener("dragover", e => {
@@ -147,15 +184,13 @@ function resetDragableClasses() {
             e.preventDefault();
 
             //IMPORTANT: prevent moving into itself or its descendants
-            if (draggedItem.contains(li)) return;
+            if (draggedItem.contains(li) || parentLiOrChildLi == "parent") return;
 
             li.parentNode.insertBefore(draggedItem, li);
             //!need to test!!
 
             updateArrayFromLists();
             console.log(mainListArray)
-            updateMainListFromArray();
-            resetDragableClasses();
 
 
         });
