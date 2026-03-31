@@ -94,6 +94,39 @@ function updateMainListFromArray() {
     })
 }
 
+function getOwnText(element) {
+  let text = '';
+  // Iterate over all direct children of the element
+  for (const node of element.childNodes) {
+    // Check if the node is a text node (nodeType 3)
+    if (node.nodeType === Node.TEXT_NODE) {
+      text += node.textContent;
+    }
+  }
+  return text.trim(); // Use .trim() to remove excess whitespace/newlines
+}
+
+function updateArrayFromLists() {
+    document.querySelectorAll("body>ul:first-of-type>li").forEach((parentLi, i) => {
+        let keyName = getOwnText(parentLi);
+        mainListArray[i][keyName] = [];
+
+        document.querySelectorAll("ul li ul li").forEach((childLi, j) => {
+
+            if (childLi.parentElement.parentElement === parentLi) {
+
+                let childLiStr = getOwnText(childLi);
+                
+                mainListArray[i][keyName].push(childLiStr);
+
+            }
+
+        });
+       
+
+    });
+}
+
 function resetDragableClasses() {
 
     document.querySelectorAll("ul li ul li").forEach(li => {
@@ -117,6 +150,13 @@ function resetDragableClasses() {
             if (draggedItem.contains(li)) return;
 
             li.parentNode.insertBefore(draggedItem, li);
+            //!need to test!!
+
+            updateArrayFromLists();
+            console.log(mainListArray)
+            updateMainListFromArray();
+            resetDragableClasses();
+
 
         });
     })
