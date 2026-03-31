@@ -63,7 +63,7 @@ function updateMainListFromArray() {
         let valsArr = val[keyName];
 
 
-        if (valsArr.length > 1) {
+        if (valsArr.length > 0) {
 
             let li2InnerText = ""
 

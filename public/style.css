@@ -1,100 +1,14 @@
-/* Reset קטן */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+body>ul:first-of-type>li {
+    padding: 0.5rem;
+    background: rgb(135, 158, 222);
+    border: 1px solid rgba(205, 231, 255, 0.624);
 }
 
-/* רקע כללי */
-body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #ece9e6, #ffffff);
-    padding: 40px;
-    direction: rtl;
-}
 
-/* הרשימה הראשית */
-#mainList {
-    list-style: none;
-    max-width: 500px;
-    margin: auto;
-    padding: 20px;
-    background: #ffffff;
-    border-radius: 16px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-}
 
-/* פריטים */
-#mainList li {
-    background: #f9f9f9;
-    margin-bottom: 12px;
-    padding: 14px 16px;
-    border-radius: 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: all 0.3s ease;
-    position: relative;
-}
-
-/* אפקט מעבר */
-#mainList li:hover {
-    background: #eef6ff;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(0,0,0,0.08);
-}
-
-/* כפתור */
-button {
-    background: #ff5c5c;
-    border: none;
-    color: white;
-    font-size: 16px;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-/* hover לכפתור */
-button:hover {
-    background: #e04848;
-    transform: scale(1.1);
-}
-
-/* רשימה פנימית */
-#l2_ul {
-    list-style: none;
-    margin-top: 12px;
-    padding-right: 20px;
-    width: 100%;
-}
-
-/* פריטים פנימיים */
-#l2_ul li {
-    background: #ffffff;
-    border: 1px solid #e0e0e0;
-}
-
-/* קו חיבור היררכי */
-#l2_ul li::before {
-    content: "";
-    position: absolute;
-    right: -10px;
-    top: 50%;
-    width: 10px;
-    height: 2px;
-    background: #ccc;
-}
-
-/* הדגשה לפריט עם תת-רשימה */
-#l2 {
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-/* טקסט בתוך li */
-#mainList li span {
-    flex-grow: 1;
+ul li ul li {
+    margin: 0.5rem;
+    padding: 0.5rem;
+    background-color: aquamarine;
+    border: 1px solid rgb(205, 255, 253);
 }
