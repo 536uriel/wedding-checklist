@@ -25,31 +25,33 @@ var mainListArray = [{
     ]
 }, {
     "להכין SAVE THE DATE": [
-" לשלוח SAVE THE DATE",
-"לעצב הזמנות",
-"להדפיס הזמנות",
-"לחלק ולשלוח הזמנות",
-"להזמין טבעות נישואין",
-"לתאם רכב + נהג לחתונה",
-"לדאוג לקישוט רכב",
+        " לשלוח SAVE THE DATE",
+        "לעצב הזמנות",
+        "להדפיס הזמנות",
+        "לחלק ולשלוח הזמנות",
+        "להזמין טבעות נישואין",
+        "לתאם רכב + נהג לחתונה",
+        "לדאוג לקישוט רכב",
     ]
-},{
-    "לסגור עם מאפרת+שיער":[
-" לעשות סיור שמלות",
-"להחליט על עיצוב שמלה",
-"למצוא ולתאם עם תופרת",
-"לקנות חליפת חתן",
-"לארגן אביזרים לשושבינות",
-"לבחור שושבינות",
-"לתאם מסיבות רווקים רווקות",
-"לארגן מסיבת אירוסין",
-"להסוף שמלה + נעליים",
-"לעשות קנייה מרוכזת לאביזרים תכשיטים",
-"להזמין/לקנות זר כלה לחתונה",
+}, {
+    "לסגור עם מאפרת+שיער": [
+        " לעשות סיור שמלות",
+        "להחליט על עיצוב שמלה",
+        "למצוא ולתאם עם תופרת",
+        "לקנות חליפת חתן",
+        "לארגן אביזרים לשושבינות",
+        "לבחור שושבינות",
+        "לתאם מסיבות רווקים רווקות",
+        "לארגן מסיבת אירוסין",
+        "להסוף שמלה + נעליים",
+        "לעשות קנייה מרוכזת לאביזרים תכשיטים",
+        "להזמין/לקנות זר כלה לחתונה",
     ]
 }]
 
 var mainList = document.getElementById("mainList");
+
+var draggedItem = null;
 
 function updateMainListFromArray() {
 
@@ -92,10 +94,42 @@ function updateMainListFromArray() {
     })
 }
 
+function resetDragableClasses() {
+
+    document.querySelectorAll("ul li ul li").forEach(li => {
+        li.classList.add("draggable")
+        li.classList.add("unselectable")
+        li.setAttribute("draggable", "true");
+
+
+        li.addEventListener("dragstart", () => {
+            draggedItem = li;
+        });
+
+        li.addEventListener("dragover", e => {
+            e.preventDefault();
+        });
+
+        li.addEventListener("drop", e => {
+            e.preventDefault();
+
+            //IMPORTANT: prevent moving into itself or its descendants
+            if (draggedItem.contains(li)) return;
+
+            li.parentNode.insertBefore(draggedItem, li);
+
+        });
+    })
+}
+
+
 updateMainListFromArray();
+resetDragableClasses();
+
 
 
 document.addEventListener("click", (e) => {
+    e.preventDefault();
     let elem = document.getElementById(e.target.id) || { tagName: "" };
 
     if (elem.tagName == "BUTTON") {
@@ -131,9 +165,13 @@ document.addEventListener("click", (e) => {
         }
 
         updateMainListFromArray();
+        resetDragableClasses();
+        console.log("update array")
 
     }
 })
+
+
 
 
 
