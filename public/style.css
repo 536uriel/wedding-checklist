@@ -8,6 +8,10 @@ ul{
   list-style-type: none;
 }
 
+#mainList{
+  text-align: right;
+}
+
 body>ul:first-of-type>li {
     padding: 0.5rem;
     background: rgb(135, 173, 222);
