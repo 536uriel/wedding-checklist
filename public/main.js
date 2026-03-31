@@ -49,6 +49,12 @@ var mainListArray = [{
     ]
 }]
 
+let db = localStorage.getItem("mainListArray");
+if (db != null) {
+    mainListArray = JSON.parse(db);
+    console.log(mainListArray)
+}
+
 var mainList = document.getElementById("mainList");
 
 var draggedItem = null;
@@ -125,6 +131,8 @@ function updateArrayFromLists() {
 
 
     });
+
+    localStorage.setItem("mainListArray", JSON.stringify(mainListArray));
 }
 
 var mainLiDraggedItem = null;
@@ -154,7 +162,7 @@ function resetDragableClasses() {
             //IMPORTANT: prevent moving into itself or its descendants
             if (parentLiOrChildLi == "child") return;
 
-            
+
             mainLi.parentNode.insertBefore(mainLiDraggedItem, mainLi);
 
             updateArrayFromLists();
@@ -241,7 +249,9 @@ document.addEventListener("click", (e) => {
 
         updateMainListFromArray();
         resetDragableClasses();
-        console.log("update array")
+
+        localStorage.setItem("mainListArray", JSON.stringify(mainListArray));
+
 
     }
 })
