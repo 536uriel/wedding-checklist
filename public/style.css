@@ -1,6 +1,11 @@
+body{
+  color: rgb(48, 79, 106);
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
 h1{
   text-align: center;
-  color: rgb(127, 129, 255);
+  color: rgb(6, 6, 7);
   
 }
 
@@ -14,15 +19,15 @@ ul{
 
 body>ul:first-of-type>li {
     padding: 0.5rem;
-    background: rgb(135, 173, 222);
-    border: 1px solid rgba(205, 231, 255, 0.624);
+    background: rgb(216, 199, 175);
+    border: 1px solid rgba(244, 232, 173, 0.624);
 }
 
 ul li ul li {
     margin: 0.5rem;
     padding: 0.5rem;
-    background-color: aquamarine;
-    border: 1px solid rgb(205, 255, 253);
+    background-color: rgb(243, 240, 222);
+    border: 1px solid rgb(238, 238, 238);
 }
 
 .draggable {
@@ -42,6 +47,11 @@ ul li ul li {
 
 button{
   padding: 0.2rem 0.5rem;
-  background-color: rgb(0, 255, 238);
-  border: 0.1rem solid black;
+  background-color: rgb(237, 204, 155);
+  border: 0.1rem solid rgb(255, 255, 255);
+}
+
+/* new code */
+.dragging {
+    opacity: 0.5;
 }

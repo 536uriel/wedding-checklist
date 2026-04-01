@@ -205,9 +205,85 @@ function resetDragableClasses() {
     })
 }
 
+//#new code
+function addTouchSupport() {
+
+    let currentDragged = null;
+
+    // ===== TOUCH START =====
+    document.addEventListener("touchstart", (e) => {
+        const li = e.target.closest("li");
+        if (!li) return;
+
+        // Parent LI
+        if (li.parentNode.matches("body > ul:first-of-type")) {
+            mainLiDraggedItem = li;
+            parentLiOrChildLi = "parent";
+        }
+        // Child LI
+        else if (li.parentNode.closest("ul")) {
+            draggedItem = li;
+            parentLiOrChildLi = "child";
+        }
+
+        currentDragged = li;
+        li.classList.add("dragging");
+
+    }, { passive: true });
+
+
+    // ===== TOUCH MOVE =====
+    document.addEventListener("touchmove", (e) => {
+        if (!currentDragged) return;
+
+        e.preventDefault(); // prevent scroll while dragging
+
+        const touch = e.touches[0];
+        const target = document.elementFromPoint(touch.clientX, touch.clientY);
+        const li = target?.closest("li");
+
+        if (!li || li === currentDragged) return;
+
+        // ===== PARENT MOVE =====
+        if (parentLiOrChildLi === "parent") {
+            if (li.parentNode.matches("body > ul:first-of-type")) {
+                li.parentNode.insertBefore(mainLiDraggedItem, li);
+            }
+        }
+
+        // ===== CHILD MOVE =====
+        if (parentLiOrChildLi === "child") {
+            if (draggedItem.contains(li)) return;
+
+            if (li.parentNode === currentDragged.parentNode) {
+                li.parentNode.insertBefore(draggedItem, li);
+            }
+        }
+
+    }, { passive: false });
+
+
+    // ===== TOUCH END =====
+    document.addEventListener("touchend", () => {
+        if (!currentDragged) return;
+
+        currentDragged.classList.remove("dragging");
+
+        updateArrayFromLists();
+        console.log(mainListArray);
+
+        currentDragged = null;
+        draggedItem = null;
+        mainLiDraggedItem = null;
+        parentLiOrChildLi = null;
+    });
+}
+
 
 updateMainListFromArray();
 resetDragableClasses();
+//#new code
+addTouchSupport();
 
 
 
@@ -249,6 +325,8 @@ document.addEventListener("click", (e) => {
 
         updateMainListFromArray();
         resetDragableClasses();
+        //#new code
+        addTouchSupport();
 
         localStorage.setItem("mainListArray", JSON.stringify(mainListArray));
 
