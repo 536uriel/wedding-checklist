@@ -1,4 +1,4 @@
-FROM gcr.io/distroless/nodejs18
+FROM node:18
 
 WORKDIR /app
 
