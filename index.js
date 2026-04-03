@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 8080;
 const path = require('path');
-__dirname = path.resolve();
+var _dirname = path.resolve();     
 
 var mainListArray = [{
     "לסגור אולם": [
@@ -57,7 +57,7 @@ var mainListArray = [{
 // Use the built-in JSON body parser middleware
 app.use(express.json());
 
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(_dirname, 'public')))
 
 app.get("/getArray", (req, res) => {
     res.send(JSON.stringify(mainListArray))
@@ -65,7 +65,7 @@ app.get("/getArray", (req, res) => {
 
 app.post("/update", (req, res) => {
     mainListArray = req.body;
-    
+    res.status(200).send({ message: "Updated successfully" });    
 })
 
 app.listen(PORT, () => {
