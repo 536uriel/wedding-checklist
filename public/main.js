@@ -342,8 +342,11 @@ async function setPage() {
             //#new code
             addTouchSupport();
 
-            localStorage.setItem("mainListArray", JSON.stringify(mainListArray));
+            createPost(mainListArray).then(res => {
+                console.log(res)
+                localStorage.setItem("mainListArray", JSON.stringify(mainListArray));
 
+            });
 
         }
     })
