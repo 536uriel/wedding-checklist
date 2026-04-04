@@ -349,6 +349,49 @@ async function setPage() {
             });
 
         }
+    });
+
+
+    //$new code
+    function convertToCSV(data) {
+        const rows = [];
+
+        // Header row
+        rows.push(["Category", "Task"]);
+
+        data.forEach(obj => {
+            const key = Object.keys(obj)[0];
+            const values = obj[key];
+
+            if (values.length === 0) {
+                rows.push([key, ""]);
+            } else {
+                values.forEach(val => {
+                    rows.push([key, val]);
+                });
+            }
+        });
+
+        return rows.map(row => row.join(",")).join("\n");
+    }
+
+    // Download CSV
+    function downloadCSV(csvContent, filename = "tasks.csv") {
+        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+        const link = document.createElement("a");
+
+        link.href = URL.createObjectURL(blob);
+        link.download = filename;
+        link.click();
+    }
+
+
+
+    document.getElementById("download-btn").addEventListener("click", (e) => {
+        // Usage
+        let csv = convertToCSV(mainListArray);
+
+        downloadCSV(csv);
     })
 
 }
