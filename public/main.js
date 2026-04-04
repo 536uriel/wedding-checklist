@@ -102,9 +102,19 @@ async function setPage() {
     }
 
     function updateArrayFromLists() {
+        //!create new array based on the lists:
+        mainListArray = [];
+
         document.querySelectorAll("body>ul:first-of-type>li").forEach((parentLi, i) => {
             let keyName = getOwnText(parentLi);
-            mainListArray[i][keyName] = [];
+            let ob = {};
+            ob[keyName] = []
+            mainListArray.push(ob);
+        });
+
+
+        document.querySelectorAll("body>ul:first-of-type>li").forEach((parentLi, i) => {
+            let keyName = getOwnText(parentLi);
 
             document.querySelectorAll("ul li ul li").forEach((childLi, j) => {
 
