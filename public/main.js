@@ -216,28 +216,37 @@ async function setPage() {
     }
 
     //#new code
+
     function addTouchSupport() {
 
         let currentDragged = null;
+        let touchTimer = null;
+        let isDragging = false;
+
 
         // ===== TOUCH START =====
         document.addEventListener("touchstart", (e) => {
-            const li = e.target.closest("li");
-            if (!li) return;
+            touchTimer = setTimeout(() => {
 
-            // Parent LI
-            if (li.parentNode.matches("body > ul:first-of-type")) {
-                mainLiDraggedItem = li;
-                parentLiOrChildLi = "parent";
-            }
-            // Child LI
-            else if (li.parentNode.closest("ul")) {
-                draggedItem = li;
-                parentLiOrChildLi = "child";
-            }
 
-            currentDragged = li;
-            li.classList.add("dragging");
+                const li = e.target.closest("li");
+                if (!li) return;
+
+                // Parent LI
+                if (li.parentNode.matches("body > ul:first-of-type")) {
+                    mainLiDraggedItem = li;
+                    parentLiOrChildLi = "parent";
+                }
+                // Child LI
+                else if (li.parentNode.closest("ul")) {
+                    draggedItem = li;
+                    parentLiOrChildLi = "child";
+                }
+
+                currentDragged = li;
+                li.classList.add("dragging");
+
+            }, 1000);
 
         }, { passive: true });
 
@@ -246,8 +255,9 @@ async function setPage() {
         document.addEventListener("touchmove", (e) => {
             if (!currentDragged) return;
 
-            e.preventDefault(); // prevent scroll while dragging
-
+            if (isDragging && e.cancelable) {
+                e.preventDefault();
+            }
             const touch = e.touches[0];
             const target = document.elementFromPoint(touch.clientX, touch.clientY);
             const li = target?.closest("li");
@@ -275,6 +285,10 @@ async function setPage() {
 
         // ===== TOUCH END =====
         document.addEventListener("touchend", () => {
+
+            isDragging = false;
+            clearTimeout(touchTimer);
+
             if (!currentDragged) return;
 
             currentDragged.classList.remove("dragging");
