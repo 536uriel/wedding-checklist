@@ -1,51 +1,58 @@
-body{
+body {
   color: rgb(48, 79, 106);
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
-h1{
+h1 {
   text-align: center;
   color: rgb(6, 6, 7);
-  
+
 }
 
-ul{
+ul {
   list-style-type: none;
 }
 
-#mainList{
+#mainList {
   text-align: right;
+  padding-right: 2rem;
 }
 
 body>ul:first-of-type>li {
-    padding: 0.5rem;
-    background: rgb(216, 199, 175);
-    border: 1px solid rgba(244, 232, 173, 0.624);
+  padding: 0.5rem;
+  background: rgb(216, 199, 175);
+  border: 1px solid rgba(244, 232, 173, 0.624);
 }
 
 ul li ul li {
-    margin: 0.5rem;
-    padding: 0.5rem;
-    background-color: rgb(243, 240, 222);
-    border: 1px solid rgb(238, 238, 238);
+  margin: 0.5rem;
+  padding: 0.5rem;
+  background-color: rgb(243, 240, 222);
+  border: 1px solid rgb(238, 238, 238);
 }
 
 .draggable {
-  cursor: grab; /* Shows open hand when hovering */
+  cursor: grab;
+  /* Shows open hand when hovering */
 }
 
 .draggable:active {
-  cursor: grabbing; /* Shows closed hand when clicking/dragging */
+  cursor: grabbing;
+  /* Shows closed hand when clicking/dragging */
 }
 
 .unselectable {
-  -webkit-user-select: none; /* Safari */
-  -moz-user-select: none;    /* Firefox */
-  -ms-user-select: none;     /* IE10+/Edge */
-  user-select: none;         /* Standard */
+  -webkit-user-select: none;
+  /* Safari */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* IE10+/Edge */
+  user-select: none;
+  /* Standard */
 }
 
-button{
+button {
   padding: 0.2rem 0.5rem;
   background-color: rgb(237, 204, 155);
   border: 0.1rem solid rgb(255, 255, 255);
@@ -53,5 +60,5 @@ button{
 
 /* new code */
 .dragging {
-    opacity: 0.5;
+  opacity: 0.5;
 }

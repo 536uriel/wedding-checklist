@@ -229,7 +229,7 @@ async function setPage() {
             touchTimer = setTimeout(() => {
 
                 isDragging = true;
-                
+
                 const li = e.target.closest("li");
                 if (!li) return;
 
@@ -320,6 +320,10 @@ async function setPage() {
         e.preventDefault();
         let elem = document.getElementById(e.target.id) || { tagName: "" };
 
+        if(e.target.id == "addBtn"){
+            return;
+        }
+
         if (elem.tagName == "BUTTON") {
             let indexStr = elem.dataset.id;
             indexStr = indexStr.split(",");
@@ -407,6 +411,26 @@ async function setPage() {
         let csv = convertToCSV(mainListArray);
 
         downloadCSV(csv);
+    });
+
+    //$new code
+    document.getElementById("addBtn").addEventListener("click", (e) => {
+        let str = prompt("הכנס משימה");
+        let ob = {}
+        ob[str] = [];
+        console.log(mainListArray)
+        mainListArray.push(ob);
+
+
+        updateMainListFromArray();
+        resetDragableClasses();
+        addTouchSupport();
+
+        createPost(mainListArray).then(res => {
+            console.log(res)
+            localStorage.setItem("mainListArray", JSON.stringify(mainListArray));
+
+        });
     })
 
 }
