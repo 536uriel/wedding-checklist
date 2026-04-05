@@ -228,7 +228,8 @@ async function setPage() {
         document.addEventListener("touchstart", (e) => {
             touchTimer = setTimeout(() => {
 
-
+                isDragging = true;
+                
                 const li = e.target.closest("li");
                 if (!li) return;
 
