@@ -246,7 +246,7 @@ async function setPage() {
                 currentDragged = li;
                 li.classList.add("dragging");
 
-            }, 1000);
+            }, 500);
 
         }, { passive: true });
 
