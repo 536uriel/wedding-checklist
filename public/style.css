@@ -1,3 +1,7 @@
+*:has(> input:checked){
+  text-decoration: line-through;
+}
+
 body {
   color: rgb(48, 79, 106);
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;

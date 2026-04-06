@@ -449,6 +449,7 @@ async function setPage() {
             resetDragableClasses();
             addTouchSupport();
 
+
             createPost(mainListArray).then(res => {
                 console.log(res)
                 localStorage.setItem("mainListArray", JSON.stringify(mainListArray));
