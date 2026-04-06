@@ -57,6 +57,8 @@ async function setPage() {
 
             let keyName = Object.keys(val)[0];
 
+            let isDone = Object.values(val)[1];
+
             let valsArr = val[keyName];
 
 
@@ -66,7 +68,12 @@ async function setPage() {
 
                 valsArr.forEach((val2, i2) => {
 
-                    li2InnerText += `<li contenteditable="false" id="${"l" + i + "_ul_l" + i2}"> ${val2} <button contenteditable="false" id="${"l" + i + "_ul_l" + i2 + "_btn"}" data-id="${i + "," + i2}"> - </button>
+                    let keyname2 = Object.keys(val2)[0]
+                    let isDone2 = val2[keyname2];
+
+                    console.log("isdone - ", isDone2)
+
+                    li2InnerText += `<li contenteditable="false" id="${"l" + i + "_ul_l" + i2}"> ${keyname2} <button contenteditable="false" id="${"l" + i + "_ul_l" + i2 + "_btn"}" data-id="${i + "," + i2}"> - </button>
                 <button contenteditable="false" id="${"+" + "," + i + "," + i2}" data-id="${"+" + "," + i + "," + i2}"> + </button> </li>`
 
                 })
@@ -109,6 +116,7 @@ async function setPage() {
             let keyName = getOwnText(parentLi);
             let ob = {};
             ob[keyName] = []
+            ob["done"] = false;
             mainListArray.push(ob);
         });
 
@@ -122,7 +130,11 @@ async function setPage() {
 
                     let childLiStr = getOwnText(childLi);
 
-                    mainListArray[i][keyName].push(childLiStr);
+                    let ob = {};
+
+                    ob[childLiStr] = false;
+
+                    mainListArray[i][keyName].push(ob);
 
                 }
 
@@ -196,6 +208,10 @@ async function setPage() {
 
             li.addEventListener("drop", e => {
                 e.preventDefault();
+
+                if(!(draggedItem instanceof HTMLElement)){
+                    return;
+                }
 
                 //IMPORTANT: prevent moving into itself or its descendants
                 if (draggedItem.contains(li) || parentLiOrChildLi == "parent") return;
@@ -320,7 +336,7 @@ async function setPage() {
         e.preventDefault();
         let elem = document.getElementById(e.target.id) || { tagName: "" };
 
-        if(e.target.id == "addBtn"){
+        if (e.target.id == "addBtn") {
             return;
         }
 
@@ -329,7 +345,10 @@ async function setPage() {
             indexStr = indexStr.split(",");
             console.log(indexStr)
 
+
+            
             if (indexStr.length > 1) {
+                //case " - "
                 if (indexStr[0] != "+") {
 
                     if (mainListArray.length > 1) {
@@ -337,20 +356,24 @@ async function setPage() {
                     }
 
                 } else {
-                    //+ case:
+                    //+ case -> case child li:
                     if (indexStr.length > 2) {
                         let str = prompt("הכנס משימה");
                         console.log(Object.values(mainListArray[indexStr[1]])[0])
-                        Object.values(mainListArray[indexStr[1]])[0].push(str)
+                        let ob = {};
+                        ob[str] = false;
+                        Object.values(mainListArray[indexStr[1]])[0].push(ob);
                     } else {
                         let str = prompt("הכנס משימה");
                         let ob = {}
                         ob[str] = [];
+                        ob["done"] = false;
                         mainListArray.push(ob);
                     }
 
                 }
             } else {
+                //case parent li
                 if (mainListArray.length > 1) {
                     mainListArray.splice(indexStr, 1)
                 }
@@ -418,6 +441,7 @@ async function setPage() {
         let str = prompt("הכנס משימה");
         let ob = {}
         ob[str] = [];
+        ob["done"] = false;
         console.log(mainListArray)
         mainListArray.push(ob);
 
