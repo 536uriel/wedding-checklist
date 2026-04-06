@@ -74,20 +74,23 @@ async function setPage() {
                     console.log("isdone - ", isDone2)
 
                     li2InnerText += `<li contenteditable="false" id="${"l" + i + "_ul_l" + i2}"> ${keyname2} <button contenteditable="false" id="${"l" + i + "_ul_l" + i2 + "_btn"}" data-id="${i + "," + i2}"> - </button>
-                <button contenteditable="false" id="${"+" + "," + i + "," + i2}" data-id="${"+" + "," + i + "," + i2}"> + </button> </li>`
+                <button contenteditable="false" id="${"+" + "," + i + "," + i2}" data-id="${"+" + "," + i + "," + i2}"> + </button> 
+                <input id="${"l" + i + "_ul_l" + i2 + "checkbox"}" data-id="${i + "," + i2 + "," + "checkbox"}" type="checkbox" ${(isDone2 ? "checked" : "")}> </li>`
 
                 })
 
                 let ul2InnerText = `<ul id="${"l" + i + "_ul_l"}">${li2InnerText}</ul>`;
 
                 li1InnerText = `<li contenteditable="false" id="${"l" + i}"> ${keyName} <button contenteditable="false" id="${"l" + i + "_btn"}" data-id="${i + ""}"> - </button> ${ul2InnerText} 
-            <button contenteditable="false" id="${"+" + "," + i}" data-id="${"+" + "," + i}"> + </button> </li>`
+            <button contenteditable="false" id="${"+" + "," + i}" data-id="${"+" + "," + i}"> + </button> 
+            <input id="${"+" + "," + i + "checkbox"}" data-id="${i + "," + "checkbox"}" type="checkbox" ${(isDone ? "checked" : "")}> </li>`
 
 
 
             } else {
                 li1InnerText = `<li contenteditable="false" id="${"l" + i}">${keyName} <button contenteditable="false" id="${"l" + i + "_btn"}" data-id="${i + ""}"> - </button> 
-             <button contenteditable="false" id="${"+" + "," + i + "," + 0}" data-id="${"+" + "," + i + "," + 0}"> + </button>  </li> `
+             <button contenteditable="false" id="${"+" + "," + i + "," + 0}" data-id="${"+" + "," + i + "," + 0}"> + </button>  
+             <input id="${"+" + "," + i + "," + 0 + "checkbox"}" type="checkbox" data-id="${i + "," + "checkbox"}" ${(isDone ? "checked" : "")}>  </li> `
 
             }
 
@@ -116,7 +119,13 @@ async function setPage() {
             let keyName = getOwnText(parentLi);
             let ob = {};
             ob[keyName] = []
-            ob["done"] = false;
+            let checkbox = parentLi.querySelector(`input[type="checkbox"]`);
+            if (typeof checkbox === 'object' && checkbox !== null) {
+                ob["done"] = checkbox.checked;
+            } else {
+                ob["done"] = false;
+            }
+
             mainListArray.push(ob);
         });
 
@@ -132,7 +141,12 @@ async function setPage() {
 
                     let ob = {};
 
-                    ob[childLiStr] = false;
+                    let checkbox = childLi.querySelector(`input[type="checkbox"]`);
+                    if (typeof checkbox === 'object' && checkbox !== null) {
+                        ob[childLiStr] = checkbox.checked;
+                    } else {
+                        ob[childLiStr] = false;
+                    }
 
                     mainListArray[i][keyName].push(ob);
 
@@ -209,7 +223,7 @@ async function setPage() {
             li.addEventListener("drop", e => {
                 e.preventDefault();
 
-                if(!(draggedItem instanceof HTMLElement)){
+                if (!(draggedItem instanceof HTMLElement)) {
                     return;
                 }
 
@@ -333,55 +347,106 @@ async function setPage() {
 
 
     document.addEventListener("click", (e) => {
-        e.preventDefault();
         let elem = document.getElementById(e.target.id) || { tagName: "" };
 
-        if (e.target.id == "addBtn") {
+        if (typeof elem !== 'object' || elem === null) {
             return;
         }
 
-        if (elem.tagName == "BUTTON") {
+
+        console.log(elem)
+        if (!(elem.tagName.toLowerCase() === "input" && elem.type === "checkbox")) {
+
+            e.preventDefault();
+
+
+            if (e.target.id == "addBtn") {
+                return;
+            }
+
+            if (elem.tagName == "BUTTON") {
+                let indexStr = elem.dataset.id;
+                indexStr = indexStr.split(",");
+                console.log(indexStr)
+
+
+
+                if (indexStr.length > 1) {
+                    //case " - "
+                    if (indexStr[0] != "+") {
+
+                        if (mainListArray.length > 1) {
+                            Object.values(mainListArray[indexStr[0]])[0].splice(indexStr[1], 1)
+                        }
+
+                    } else {
+                        //+ case -> case child li:
+                        if (indexStr.length > 2) {
+                            let str = prompt("הכנס משימה");
+                            console.log(Object.values(mainListArray[indexStr[1]])[0])
+                            let ob = {};
+                            ob[str] = false;
+                            Object.values(mainListArray[indexStr[1]])[0].push(ob);
+                        } else {
+                            let str = prompt("הכנס משימה");
+                            let ob = {}
+                            ob[str] = [];
+                            ob["done"] = false;
+                            mainListArray.push(ob);
+                        }
+
+                    }
+                } else {
+                    //case parent li
+                    if (mainListArray.length > 1) {
+                        mainListArray.splice(indexStr, 1)
+                    }
+                }
+
+                updateMainListFromArray();
+                resetDragableClasses();
+                //#new code
+                addTouchSupport();
+
+                createPost(mainListArray).then(res => {
+                    console.log(res)
+                    localStorage.setItem("mainListArray", JSON.stringify(mainListArray));
+
+                });
+
+            }
+        } else {
+            //checkbox - case:
+
+            console.log("checkbox case");
+
+
+            let checked = elem.checked;
+
+            console.log(checked)
+
             let indexStr = elem.dataset.id;
             indexStr = indexStr.split(",");
-            console.log(indexStr)
 
 
-            
-            if (indexStr.length > 1) {
-                //case " - "
-                if (indexStr[0] != "+") {
-
-                    if (mainListArray.length > 1) {
-                        Object.values(mainListArray[indexStr[0]])[0].splice(indexStr[1], 1)
-                    }
-
-                } else {
-                    //+ case -> case child li:
-                    if (indexStr.length > 2) {
-                        let str = prompt("הכנס משימה");
-                        console.log(Object.values(mainListArray[indexStr[1]])[0])
-                        let ob = {};
-                        ob[str] = false;
-                        Object.values(mainListArray[indexStr[1]])[0].push(ob);
-                    } else {
-                        let str = prompt("הכנס משימה");
-                        let ob = {}
-                        ob[str] = [];
-                        ob["done"] = false;
-                        mainListArray.push(ob);
-                    }
-
-                }
+            //case of: indexStr = [i, checkbox]
+            if (indexStr.length <= 2) {
+                mainListArray[indexStr[0]]["done"] = checked;
+                console.log(mainListArray[indexStr[0]]["done"])
             } else {
-                //case parent li
-                if (mainListArray.length > 1) {
-                    mainListArray.splice(indexStr, 1)
-                }
+                //case of: indexStr = [i, j, checkbox]
+                let i = indexStr[0];
+                let j = indexStr[1];
+                let keyName = Object.keys(mainListArray[i])[0];
+                let keyname2 = Object.keys(mainListArray[i][keyName][j])[0];
+
+                console.log(mainListArray[i][keyName][j][keyname2])
+
+                mainListArray[i][keyName][j][keyname2] = checked;
             }
 
             updateMainListFromArray();
             resetDragableClasses();
-            //#new code
             addTouchSupport();
 
             createPost(mainListArray).then(res => {
@@ -391,6 +456,7 @@ async function setPage() {
             });
 
         }
+
     });
 
 
