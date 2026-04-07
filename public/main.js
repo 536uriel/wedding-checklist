@@ -157,10 +157,11 @@ async function setPage() {
 
         });
 
-        localStorage.setItem("mainListArray", JSON.stringify(mainListArray));
 
         createPost(mainListArray).then(res => {
             console.log(res)
+            localStorage.setItem("mainListArray", JSON.stringify(mainListArray));
+
         });
     }
 
@@ -195,10 +196,8 @@ async function setPage() {
                 mainLi.parentNode.insertBefore(mainLiDraggedItem, mainLi);
 
                 updateArrayFromLists();
-                createPost(mainListArray).then(res => {
-                    console.log(res)
-                });
-                console.log(mainListArray)
+                //$new code
+                update();
 
             });
         });
@@ -234,11 +233,8 @@ async function setPage() {
                 //!need to test!!
 
                 updateArrayFromLists();
-                console.log(mainListArray)
-
-                createPost(mainListArray).then(res => {
-                    console.log(res)
-                });
+                //$new code
+                update();
 
 
             });
@@ -325,11 +321,9 @@ async function setPage() {
             currentDragged.classList.remove("dragging");
 
             updateArrayFromLists();
-            console.log(mainListArray);
 
-            createPost(mainListArray).then(res => {
-                console.log(res)
-            });
+            //$new code
+            update();
 
             currentDragged = null;
             draggedItem = null;
@@ -339,11 +333,8 @@ async function setPage() {
     }
 
 
-    updateMainListFromArray();
-    resetDragableClasses();
-    //#new code
-    addTouchSupport();
-
+    //$new code
+    update();
 
 
     document.addEventListener("click", (e) => {
@@ -403,16 +394,8 @@ async function setPage() {
                     }
                 }
 
-                updateMainListFromArray();
-                resetDragableClasses();
-                //#new code
-                addTouchSupport();
-
-                createPost(mainListArray).then(res => {
-                    console.log(res)
-                    localStorage.setItem("mainListArray", JSON.stringify(mainListArray));
-
-                });
+                //$new code
+                update();
 
             }
         } else {
@@ -445,20 +428,26 @@ async function setPage() {
                 mainListArray[i][keyName][j][keyname2] = checked;
             }
 
-            updateMainListFromArray();
-            resetDragableClasses();
-            addTouchSupport();
-
-
-            createPost(mainListArray).then(res => {
-                console.log(res)
-                localStorage.setItem("mainListArray", JSON.stringify(mainListArray));
-
-            });
+            //$new code
+            update();
 
         }
 
     });
+
+    //@new code
+    function update() {
+        updateMainListFromArray();
+        resetDragableClasses();
+        //#new code
+        addTouchSupport();
+
+        createPost(mainListArray).then(res => {
+            console.log(res)
+            localStorage.setItem("mainListArray", JSON.stringify(mainListArray));
+
+        });
+    }
 
 
     //$new code
