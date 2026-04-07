@@ -119,7 +119,7 @@ async function setPage() {
             let keyName = getOwnText(parentLi);
             let ob = {};
             ob[keyName] = []
-            let checkbox = parentLi.querySelector(`input[type="checkbox"]`);
+            let checkbox = parentLi.querySelector(':scope > input[type="checkbox"]');
             if (typeof checkbox === 'object' && checkbox !== null) {
                 ob["done"] = checkbox.checked;
             } else {
