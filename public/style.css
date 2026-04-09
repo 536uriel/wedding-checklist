@@ -76,8 +76,18 @@ input[type="date"] {
   opacity: 0.5;
 }
 
-.date{
+.date {
   display: block;
   width: fit-content;
-  
+
+}
+
+/* Targeted for Chrome, Safari, and Edge */
+input[type="date"]::-webkit-datetime-edit {
+  display: none;
+}
+
+input[type="date"] {
+  background-color: rgb(235, 209, 171);
+  /* Hides the placeholder text */
 }
