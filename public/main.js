@@ -487,13 +487,18 @@ async function setPage() {
             //$new code
             //date case
             if (elem.tagName.toLowerCase() === "input" && elem.type === "date") {
+                //!new fix
+                elem.value = "";
 
                 console.log("date case");
+                console.log(elem.value);
                 dateClicked = elem;
 
                 function handler(e) {
                     if (typeof dateClicked === 'object' || dateClicked !== null) {
                         let dateStr = dateClicked.value;
+
+                        
                         if (dateStr) {
 
                             let i = dateClicked.id.split(",")[0];
