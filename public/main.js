@@ -39,7 +39,7 @@ async function setPage() {
 
     } catch (error) {
         console.log(error)
-        mainListArray = db;
+        //mainListArray = db;
     }
 
 
