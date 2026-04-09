@@ -82,12 +82,16 @@ input[type="date"] {
 
 }
 
-/* Targeted for Chrome, Safari, and Edge */
-input[type="date"]::-webkit-datetime-edit {
-  display: none;
-}
+@media (pointer: fine) {
+  /* Desktop styles */
 
-input[type="date"] {
-  background-color: rgb(235, 209, 171);
-  /* Hides the placeholder text */
+  /* Targeted for Chrome, Safari, and Edge */
+  input[type="date"]::-webkit-datetime-edit {
+    display: none;
+  }
+
+  input[type="date"] {
+    background-color: rgb(235, 209, 171);
+    /* Hides the placeholder text */
+  }
 }
