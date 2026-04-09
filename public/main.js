@@ -491,6 +491,7 @@ async function setPage() {
 
                             update(() => {
                                 dateClicked.removeEventListener("change", handler);
+                                return; //$importent fix
                             });
 
 
@@ -500,8 +501,6 @@ async function setPage() {
                 }
 
                 dateClicked.addEventListener("change", handler);
-
-                return; //$importent fix
 
             }
 
