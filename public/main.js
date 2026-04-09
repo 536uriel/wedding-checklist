@@ -292,18 +292,26 @@ async function setPage() {
 
             //$new code
             e.stopPropagation();
-            if (isInteractive(e.target)) return;
+            if (isInteractive(e.target)) {
+                isDragging = false;
+                return;
+            }
 
             touchTimer = setTimeout(() => {
+
+                //$new code
+                e.stopPropagation();
+                if (isInteractive(e.target)) {
+                    isDragging = false;
+                    return;
+                }
 
                 isDragging = true;
 
                 const li = e.target.closest("li");
                 if (!li) return;
 
-                //$new code
-                e.stopPropagation();
-                if (isInteractive(e.target)) return;
+
 
                 // Parent LI
                 if (li.parentNode.matches("body > ul:first-of-type")) {
