@@ -279,28 +279,14 @@ async function setPage() {
         let touchTimer = null;
         let isDragging = false;
 
-        //$new code
-        function isInteractive(el) {
-            return el.closest("input, textarea, select, button");
-        }
-
 
 
         // ===== TOUCH START =====
         document.addEventListener("touchstart", (e) => {
 
 
-            //$new code
-            if (isInteractive(e.target)) {
-                return;
-            }
-
             touchTimer = setTimeout(() => {
 
-                //$new code
-                if (isInteractive(e.target)) {
-                    return;
-                }
 
                 isDragging = true;
 
