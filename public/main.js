@@ -487,8 +487,6 @@ async function setPage() {
             //$new code
             //date case
             if (elem.tagName.toLowerCase() === "input" && elem.type === "date") {
-                //!new fix
-                elem.value = "";
 
                 console.log("date case");
                 console.log(elem.value);
@@ -498,19 +496,21 @@ async function setPage() {
                     if (typeof dateClicked === 'object' || dateClicked !== null) {
                         let dateStr = dateClicked.value;
 
-                        
+
                         if (dateStr) {
+                            if ((new Date(dateStr)).getDate() != (new Date).getDate()) {
 
-                            let i = dateClicked.id.split(",")[0];
 
-                            mainListArray[i]["date"] = dateStr;
-                            console.log("date was picked");
+                                let i = dateClicked.id.split(",")[0];
 
-                            update(() => {
-                                dateClicked.removeEventListener("change", handler);
-                                return; //$importent fix
-                            });
+                                mainListArray[i]["date"] = dateStr;
+                                console.log("date was picked");
 
+                                update(() => {
+                                    dateClicked.removeEventListener("change", handler);
+                                    return; //$importent fix
+                                });
+                            }
 
                         }
                     }
