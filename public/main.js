@@ -89,7 +89,7 @@ async function setPage() {
                 li1InnerText = `<li contenteditable="false" id="${"l" + i}"> ${keyName} <button contenteditable="false" id="${"l" + i + "_btn"}" data-id="${i + ""}"> - </button> ${ul2InnerText} 
             <button contenteditable="false" id="${"+" + "," + i}" data-id="${"+" + "," + i}"> + </button> 
             <input id="${"+" + "," + i + "checkbox"}" data-id="${i + "," + "checkbox"}" type="checkbox" ${(isDone ? "checked" : "")}> 
-            <strong class="date"> <div style="display: inline;"> ${dateStr} </div> <input type="date" id="${i + "," + "date"}"> בחר תאריך יעד </strong> </li>`
+            <strong class="date"> <div style="display: inline-block;"> ${dateStr} </div> <input type="date" id="${i + "," + "date"}"> בחר תאריך יעד </strong> </li>`
 
 
 
@@ -98,7 +98,7 @@ async function setPage() {
                 li1InnerText = `<li contenteditable="false" id="${"l" + i}">${keyName} <button contenteditable="false" id="${"l" + i + "_btn"}" data-id="${i + ""}"> - </button> 
              <button contenteditable="false" id="${"+" + "," + i + "," + 0}" data-id="${"+" + "," + i + "," + 0}"> + </button>  
              <input id="${"+" + "," + i + "," + 0 + "checkbox"}" type="checkbox" data-id="${i + "," + "checkbox"}" ${(isDone ? "checked" : "")}>  
-             <strong class="date"> <div style="display: inline;"> ${dateStr} </div> <input type="date" id="${i + "," + "date"}"> בחר תאריך יעד </strong> </li> `
+             <strong class="date"> <div style="display: inline-block;"> ${dateStr} </div> <input type="date" id="${i + "," + "date"}"> בחר תאריך יעד </strong> </li> `
 
             }
 
@@ -585,6 +585,36 @@ async function setPage() {
 
         });
     })
+
+
+    function DefineAndGetAlertsFromDatesArrayByDaysBefore(day) {
+        let alertText = "";
+
+        mainListArray.forEach((val, i) => {
+
+            if (val.hasOwnProperty("date")) {
+                let today = new Date();
+                let dateAlert = new Date(val["date"]);
+                dateAlert.setDate(dateAlert.getDate() - day);
+
+                if (today > dateAlert) {
+                    let keyName = Object.keys(mainListArray[i]);
+                    let dateStr = val["date"];
+                    alertText += `תזכורת: ${keyName}
+                    עד לתאריך: ${dateStr} \n`;
+
+                    
+                }
+            }
+
+        });
+
+        if(alertText.length > 1){
+            alert(alertText);
+        }
+    }
+
+    DefineAndGetAlertsFromDatesArrayByDaysBefore(7);
 
 }
 
