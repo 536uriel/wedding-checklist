@@ -551,23 +551,47 @@ async function setPage() {
     function convertToCSV(data) {
         const rows = [];
 
-        // Header row
-        rows.push(["Category", "Task"]);
+        // Header
+        rows.push(["Task", "Subtask", "Done", "Date"]);
 
-        data.forEach(obj => {
-            const key = Object.keys(obj)[0];
-            const values = obj[key];
+        data.forEach(item => {
+            // Extract dynamic task name (first key that's not 'done' or 'date')
+            const taskName = Object.keys(item).find(
+                key => key !== "done" && key !== "date"
+            );
 
-            if (values.length === 0) {
-                rows.push([key, ""]);
-            } else {
-                values.forEach(val => {
-                    rows.push([key, val]);
+            const subtasks = item[taskName];
+            const done = item.done ?? "";
+            const date = item.date ?? "";
+
+            if (Array.isArray(subtasks) && subtasks.length > 0) {
+                // Has subtasks
+                subtasks.forEach(sub => {
+                    const subtaskName = Object.keys(sub)[0];
+                    const subDone = sub[subtaskName];
+
+                    rows.push([
+                        taskName,
+                        subtaskName,
+                        subDone,
+                        date
+                    ]);
                 });
+            } else {
+                // No subtasks
+                rows.push([
+                    taskName,
+                    "",
+                    done,
+                    date
+                ]);
             }
         });
 
-        return rows.map(row => row.join(",")).join("\n");
+        // Convert to CSV string
+        return rows
+            .map(row => row.map(value => `"${value}"`).join(","))
+            .join("\n");
     }
 
     // Download CSV
