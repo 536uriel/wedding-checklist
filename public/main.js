@@ -301,6 +301,10 @@ async function setPage() {
                 const li = e.target.closest("li");
                 if (!li) return;
 
+                //$new code
+                e.stopPropagation();
+                if (isInteractive(e.target)) return;
+
                 // Parent LI
                 if (li.parentNode.matches("body > ul:first-of-type")) {
                     mainLiDraggedItem = li;
