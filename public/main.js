@@ -273,6 +273,9 @@ async function setPage() {
 
     //#new code
 
+    //$new code 
+    function isInteractive(el) { return el.closest("input, textarea, select, button"); }
+
     function addTouchSupport() {
 
         let currentDragged = null;
@@ -283,9 +286,14 @@ async function setPage() {
 
         // ===== TOUCH START =====
         document.addEventListener("touchstart", (e) => {
+            //!fix
+            if (isInteractive(e.target)) return;
 
 
             touchTimer = setTimeout(() => {
+
+                //!fix
+                if (isInteractive(e.target)) return;
 
 
                 isDragging = true;
@@ -316,6 +324,7 @@ async function setPage() {
 
         // ===== TOUCH MOVE =====
         document.addEventListener("touchmove", (e) => {
+
             if (!currentDragged) return;
 
             if (isDragging && e.cancelable) {
@@ -347,7 +356,10 @@ async function setPage() {
 
 
         // ===== TOUCH END =====
-        document.addEventListener("touchend", () => {
+        document.addEventListener("touchend", (e) => {
+
+            //!fix
+            if (isInteractive(e.target)) return;
 
             isDragging = false;
             clearTimeout(touchTimer);
