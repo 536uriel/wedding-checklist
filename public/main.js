@@ -291,7 +291,6 @@ async function setPage() {
 
 
             //$new code
-            e.stopPropagation();
             if (isInteractive(e.target)) {
                 return;
             }
@@ -299,7 +298,6 @@ async function setPage() {
             touchTimer = setTimeout(() => {
 
                 //$new code
-                e.stopPropagation();
                 if (isInteractive(e.target)) {
                     return;
                 }
