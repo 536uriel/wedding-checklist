@@ -95,3 +95,16 @@ input[type="date"] {
     /* Hides the placeholder text */
   }
 }
+
+@media only screen and (max-width: 767px) and (hover: none) and (pointer: coarse) {
+
+  /* Styles specific to smartphones */
+  input[type="date"] {
+    -webkit-appearance: none;
+    /* Additional styling to make it look like a normal input */
+    appearance: none;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+}
