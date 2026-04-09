@@ -282,15 +282,17 @@ async function setPage() {
 
         // ===== TOUCH START =====
         document.addEventListener("touchstart", (e) => {
+
+
+            //$new code
+            e.stopPropagation();
+
             touchTimer = setTimeout(() => {
 
                 isDragging = true;
 
                 const li = e.target.closest("li");
                 if (!li) return;
-
-                //$new code
-                e.stopPropagation();
 
                 // Parent LI
                 if (li.parentNode.matches("body > ul:first-of-type")) {
@@ -606,13 +608,13 @@ async function setPage() {
                     alertText += `תזכורת: ${keyName}
                     עד לתאריך: ${dateStr} \n`;
 
-                    
+
                 }
             }
 
         });
 
-        if(alertText.length > 1){
+        if (alertText.length > 1) {
             alert(alertText);
         }
     }
