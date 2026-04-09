@@ -19,7 +19,7 @@ async function setPage() {
             }
 
             const data = await response.json(); // Parse the JSON response
-            console.log(data); // The newly created post object returned from the server
+            //console.log(data); // The newly created post object returned from the server
         } catch (error) {
             // Handle network errors or the error thrown above
             console.error('There was a problem with the fetch operation:', error);
@@ -59,6 +59,11 @@ async function setPage() {
 
             let isDone = Object.values(val)[1];
 
+            let dateStr = "";
+
+            dateStr = ((val).hasOwnProperty("date") ? val["date"] : "");
+
+
             let valsArr = val[keyName];
 
 
@@ -83,14 +88,17 @@ async function setPage() {
 
                 li1InnerText = `<li contenteditable="false" id="${"l" + i}"> ${keyName} <button contenteditable="false" id="${"l" + i + "_btn"}" data-id="${i + ""}"> - </button> ${ul2InnerText} 
             <button contenteditable="false" id="${"+" + "," + i}" data-id="${"+" + "," + i}"> + </button> 
-            <input id="${"+" + "," + i + "checkbox"}" data-id="${i + "," + "checkbox"}" type="checkbox" ${(isDone ? "checked" : "")}> </li>`
+            <input id="${"+" + "," + i + "checkbox"}" data-id="${i + "," + "checkbox"}" type="checkbox" ${(isDone ? "checked" : "")}> 
+            <strong class="date"> <div style="display: inline;"> ${dateStr} </div> <input type="date" id="${i + "," + "date"}"> בחר תאריך יעד </strong> </li>`
 
 
 
             } else {
+
                 li1InnerText = `<li contenteditable="false" id="${"l" + i}">${keyName} <button contenteditable="false" id="${"l" + i + "_btn"}" data-id="${i + ""}"> - </button> 
              <button contenteditable="false" id="${"+" + "," + i + "," + 0}" data-id="${"+" + "," + i + "," + 0}"> + </button>  
-             <input id="${"+" + "," + i + "," + 0 + "checkbox"}" type="checkbox" data-id="${i + "," + "checkbox"}" ${(isDone ? "checked" : "")}>  </li> `
+             <input id="${"+" + "," + i + "," + 0 + "checkbox"}" type="checkbox" data-id="${i + "," + "checkbox"}" ${(isDone ? "checked" : "")}>  
+             <strong class="date"> <div style="display: inline;"> ${dateStr} </div> <input type="date" id="${i + "," + "date"}"> בחר תאריך יעד </strong> </li> `
 
             }
 
@@ -119,12 +127,34 @@ async function setPage() {
             let keyName = getOwnText(parentLi);
             let ob = {};
             ob[keyName] = []
+
             let checkbox = parentLi.querySelector(':scope > input[type="checkbox"]');
             if (typeof checkbox === 'object' && checkbox !== null) {
                 ob["done"] = checkbox.checked;
             } else {
                 ob["done"] = false;
             }
+
+            let div = parentLi.querySelector(':scope > strong > div');
+
+
+
+
+            if (typeof div === 'object' && div !== null) {
+
+
+                let dateStr = div.innerText;
+                if (dateStr.length > 1) {
+
+                    ob["date"] = dateStr
+                    console.log(div)
+                    console.log(dateStr);
+                }
+
+
+            }
+
+
 
             mainListArray.push(ob);
         });
@@ -159,7 +189,7 @@ async function setPage() {
 
 
         createPost(mainListArray).then(res => {
-            console.log(res)
+            //console.log(res)
             localStorage.setItem("mainListArray", JSON.stringify(mainListArray));
 
         });
@@ -336,8 +366,11 @@ async function setPage() {
     //$new code
     update();
 
+    var dateClicked = null;
+
 
     document.addEventListener("click", (e) => {
+
         let elem = document.getElementById(e.target.id) || { tagName: "" };
 
         if (typeof elem !== 'object' || elem === null) {
@@ -346,7 +379,7 @@ async function setPage() {
 
 
         console.log(elem)
-        if (!(elem.tagName.toLowerCase() === "input" && elem.type === "checkbox")) {
+        if (!(elem.tagName.toLowerCase() === "input")) {
 
             e.preventDefault();
 
@@ -400,53 +433,93 @@ async function setPage() {
             }
         } else {
             //checkbox - case:
-
-            console.log("checkbox case");
-
-
-            let checked = elem.checked;
-
-            console.log(checked)
-
-            let indexStr = elem.dataset.id;
-            indexStr = indexStr.split(",");
+            if (elem.tagName.toLowerCase() === "input" && elem.type === "checkbox") {
 
 
-            //case of: indexStr = [i, checkbox]
-            if (indexStr.length <= 2) {
-                mainListArray[indexStr[0]]["done"] = checked;
-                console.log(mainListArray[indexStr[0]]["done"])
-            } else {
-                //case of: indexStr = [i, j, checkbox]
-                let i = indexStr[0];
-                let j = indexStr[1];
-                let keyName = Object.keys(mainListArray[i])[0];
-                let keyname2 = Object.keys(mainListArray[i][keyName][j])[0];
+                console.log("checkbox case");
 
-                console.log(mainListArray[i][keyName][j][keyname2])
 
-                mainListArray[i][keyName][j][keyname2] = checked;
+                let checked = elem.checked;
+
+                console.log(checked)
+
+                let indexStr = elem.dataset.id;
+                indexStr = indexStr.split(",");
+
+
+                //case of: indexStr = [i, checkbox]
+                if (indexStr.length <= 2) {
+                    mainListArray[indexStr[0]]["done"] = checked;
+                    console.log(mainListArray[indexStr[0]]["done"])
+                } else {
+                    //case of: indexStr = [i, j, checkbox]
+                    let i = indexStr[0];
+                    let j = indexStr[1];
+                    let keyName = Object.keys(mainListArray[i])[0];
+                    let keyname2 = Object.keys(mainListArray[i][keyName][j])[0];
+
+                    console.log(mainListArray[i][keyName][j][keyname2])
+
+                    mainListArray[i][keyName][j][keyname2] = checked;
+                }
+
+                update();
             }
 
             //$new code
-            update();
+            //date case
+            if (elem.tagName.toLowerCase() === "input" && elem.type === "date") {
+
+                console.log("date case");
+                dateClicked = elem;
+
+                function handler(e) {
+                    if (typeof dateClicked === 'object' || dateClicked !== null) {
+                        let dateStr = dateClicked.value;
+                        if (dateStr) {
+
+                            let i = dateClicked.id.split(",")[0];
+
+                            mainListArray[i]["date"] = dateStr;
+                            console.log("date was picked");
+
+                            update(() => {
+                                dateClicked.removeEventListener("change", handler);
+                            });
+
+
+                        }
+                    }
+
+                }
+
+                dateClicked.addEventListener("change", handler);
+
+            }
+
+
 
         }
 
     });
 
     //@new code
-    function update() {
+    function update(callback) {
         updateMainListFromArray();
         resetDragableClasses();
         //#new code
         addTouchSupport();
 
         createPost(mainListArray).then(res => {
-            console.log(res)
+            //console.log(res)
             localStorage.setItem("mainListArray", JSON.stringify(mainListArray));
 
         });
+
+        if (typeof callback === "function" && callback !== null) {
+            callback();
+            console.log("callback")
+        }
     }
 
 
@@ -507,7 +580,7 @@ async function setPage() {
         addTouchSupport();
 
         createPost(mainListArray).then(res => {
-            console.log(res)
+            //console.log(res)
             localStorage.setItem("mainListArray", JSON.stringify(mainListArray));
 
         });

@@ -1,4 +1,4 @@
-*:has(> input:checked){
+*:has(> input:checked) {
   text-decoration: line-through;
 }
 
@@ -62,12 +62,20 @@ button {
   border: 0.1rem solid rgb(255, 255, 255);
 }
 
-input[type="checkbox"]{
-    padding: 0.2rem 0.5rem;
-    z-index: 1;
+input[type="checkbox"] {
+  padding: 0.2rem 0.5rem;
+  z-index: 1;
+}
+
+input[type="date"] {
+  z-index: 1;
 }
 
 /* new code */
 .dragging {
   opacity: 0.5;
+}
+
+.date{
+ float: left;
 }
