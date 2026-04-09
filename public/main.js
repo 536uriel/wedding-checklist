@@ -293,7 +293,6 @@ async function setPage() {
             //$new code
             e.stopPropagation();
             if (isInteractive(e.target)) {
-                isDragging = false;
                 return;
             }
 
@@ -302,7 +301,6 @@ async function setPage() {
                 //$new code
                 e.stopPropagation();
                 if (isInteractive(e.target)) {
-                    isDragging = false;
                     return;
                 }
 
@@ -518,6 +516,8 @@ async function setPage() {
                 }
 
                 dateClicked.addEventListener("change", handler);
+
+                return; //$importent fix
 
             }
 
