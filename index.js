@@ -5,6 +5,7 @@ const path = require('path');
 var _dirname = path.resolve();
 const { Storage } = require('@google-cloud/storage');
 
+//!for testing only -> need to disable server for this checking !importent
 // const storage = process.env.NODE_ENV === 'production'
 //     ? new Storage() // GCP auto auth
 //     : new Storage({
