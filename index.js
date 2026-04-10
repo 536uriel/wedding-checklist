@@ -6,8 +6,8 @@ var _dirname = path.resolve();
 const { Storage } = require('@google-cloud/storage');
 
 const storage = new Storage();
-const bucketName = 'wedding-checklist';
-const fileName = 'data.json';
+const bucketName = 'run-sources-wedding-checklist-492012-africa-south1';
+const fileName = 'services/uribrave1/wedding-chcklist/data.json';
 
 async function setDataFileFromMainListArray(data) {
     try {
