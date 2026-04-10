@@ -3,17 +3,20 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 const path = require('path');
 var _dirname = path.resolve();
-const fs = require('node:fs/promises');
+const { Storage } = require('@google-cloud/storage');
+
+const storage = new Storage();
+const bucketName = 'wedding-checklist';
+const fileName = 'data.json';
 
 async function setDataFileFromMainListArray(data) {
-    const filePath = './data.json';
-
     try {
+        const file = storage.bucket(bucketName).file(fileName);
 
-        // --- WRITE ---
-        // JSON.stringify params: (object, replacer, space)
-        // Using '2' for the space parameter makes the file human-readable
-        await fs.writeFile(filePath, JSON.stringify(data, null, 2), 'utf8');
+        await file.save(JSON.stringify(data, null, 2), {
+            contentType: 'application/json',
+        });
+
         console.log('File updated successfully!');
         return 'File updated successfully!';
 
@@ -24,23 +27,20 @@ async function setDataFileFromMainListArray(data) {
 }
 
 async function getMainListArray() {
-    const filePath = './data.json';
-
     try {
-        // --- READ ---
-        const rawData = await fs.readFile(filePath, 'utf8');
-        const data = JSON.parse(rawData);
+        const file = storage.bucket(bucketName).file(fileName);
+
+        const [contents] = await file.download();
+        const data = JSON.parse(contents.toString());
+
         console.log('Read data:', data);
-
         return data;
-
 
     } catch (error) {
         console.error('Error handling JSON file:', error.message);
         return null;
     }
 }
-
 
 
 

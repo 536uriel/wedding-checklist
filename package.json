@@ -18,6 +18,7 @@
   "homepage": "https://github.com/536uriel/wedding-checklist#readme",
   "description": "",
   "dependencies": {
+    "@google-cloud/storage": "^7.19.0",
     "express": "^5.2.1"
   }
 }
