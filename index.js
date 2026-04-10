@@ -8,7 +8,7 @@ const { Storage } = require('@google-cloud/storage');
 const storage = process.env.NODE_ENV === 'production'
     ? new Storage() // GCP auto auth
     : new Storage({
-        keyFilename: './wedding-checklist-492012-20ed29df81d7.json'
+        keyFilename: './wedding-checklist-492012-163e58aaf2ac.json'
     });
 
 const bucketName = 'wedding-checklist-data';
