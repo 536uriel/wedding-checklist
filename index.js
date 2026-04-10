@@ -54,7 +54,7 @@ app.get("/getArray", async (req, res) => {
     if (mainListArray !== null) {
         res.send(JSON.stringify(mainListArray))
     } else {
-        res.status(500).send([]);
+        res.status(500).send(null);
     }
 
 })
@@ -66,14 +66,12 @@ app.post("/update", async (req, res) => {
             let mainListArray = req.body;
             console.log("new rew//", mainListArray)
             let msg = await setDataFileFromMainListArray(mainListArray);
-            res.status(200).send({ message: msg });
-            
-        }else{
-            res.sendStatus(400);
+            return res.status(200).send({ message: msg });
+
         }
     }
 
-    res.sendStatus(400);
+    return res.status(400).send(null);
 
 })
 
