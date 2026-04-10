@@ -5,11 +5,13 @@ const path = require('path');
 var _dirname = path.resolve();
 const { Storage } = require('@google-cloud/storage');
 
-const storage = process.env.NODE_ENV === 'production'
-    ? new Storage() // GCP auto auth
-    : new Storage({
-        keyFilename: 'secret.json'
-    });
+// const storage = process.env.NODE_ENV === 'production'
+//     ? new Storage() // GCP auto auth
+//     : new Storage({
+//         keyFilename: 'secret.json'
+//     });
+
+const storage = new Storage();
 
 const bucketName = 'wedding-checklist-data';
 const fileName = 'data.json';
