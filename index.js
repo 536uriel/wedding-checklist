@@ -60,10 +60,21 @@ app.get("/getArray", async (req, res) => {
 })
 
 app.post("/update", async (req, res) => {
-    let mainListArray = req.body;
-    console.log("new rew//", mainListArray)
-    let msg = await setDataFileFromMainListArray(mainListArray);
-    res.status(200).send({ message: msg });
+    if (req.body !== null) {
+        if (req.body.length > 0) {
+
+            let mainListArray = req.body;
+            console.log("new rew//", mainListArray)
+            let msg = await setDataFileFromMainListArray(mainListArray);
+            res.status(200).send({ message: msg });
+            
+        }else{
+            res.sendStatus(400);
+        }
+    }
+
+    res.sendStatus(400);
+
 })
 
 app.listen(PORT, () => {
