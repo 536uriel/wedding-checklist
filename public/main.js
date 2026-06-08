@@ -640,17 +640,23 @@ async function setPage() {
 
         mainListArray.forEach((val, i) => {
 
-            if (val.hasOwnProperty("date")) {
-                let today = new Date();
-                let dateAlert = new Date(val["date"]);
-                dateAlert.setDate(dateAlert.getDate() - day);
+            if (val.hasOwnProperty("done")) {
+                if (val["done"] == false) {
 
-                if (today > dateAlert) {
-                    let keyName = Object.keys(mainListArray[i]);
-                    let dateStr = val["date"];
-                    alertText += `תזכורת: ${keyName}
+                    if (val.hasOwnProperty("date")) {
+                        let today = new Date();
+                        let dateAlert = new Date(val["date"]);
+                        dateAlert.setDate(dateAlert.getDate() - day);
+
+                        if (today > dateAlert) {
+                            let keyName = Object.keys(mainListArray[i]);
+                            let dateStr = val["date"];
+                            alertText += `תזכורת: ${keyName}
                     עד לתאריך: ${dateStr} \n`;
 
+
+                        }
+                    }
 
                 }
             }
